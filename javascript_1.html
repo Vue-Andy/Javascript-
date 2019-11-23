@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title></title>
+		<script src='./wronglessTopic.js'></script>
 	</head>
 	<body>
 		<div id="dd">some text</div>
@@ -11,6 +12,7 @@
 			function changeColor() {
 				var div = document.getElementById('dd');
 				div.style.color = 'red'
+				div.innerHTML = "\u00e9"
 			}
 		</script>
 	</body>
