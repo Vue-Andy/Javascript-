@@ -39,4 +39,30 @@ var data = {
 	trail2:[[2,3],[4,5]],
 }
 
-  // javascript中最常用的表达式
+  // javascript中最常用的表达式是使用运算符
+3+2;
+3-2;
+3*2;
+3/2;
+"3"="2";               // "32"
+var count = 0;
+count++;
+count--;
+count+=2;
+count*=3;              // 6
+  // 比较运算符
+var x = 2,y = 3;
+x === y;
+x!=y;
+x>y;
+x>=y;
+x<y;
+x<=y;
+"two" == "three";
+"two" > "three";
+false == (x>y);
+  // 逻辑运算符是对布尔值的合并或求反
+(x==2) && (y==3);
+(x>3) || (y<3);
+!(x==y);
+console.log(111)

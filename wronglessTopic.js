@@ -24,9 +24,9 @@ Array.isArray([]);               // true
 [] instanceof Array;             // true  --- 通过构造函数判断,instanceof 右边的必须要为对象,否则报错	Right-hand side of 'instanceof' is not an object
 [1] instanceof Array;            // true
 [] instanceof Object;            // true  --- 因为数组是特殊的对象
-// {} instanceof Object          // * 报错,需要先拿变量接收 {} ,再判断,则为真
-Function instanceof Object;      // true  --- 因为函数式特殊的对象
-Function instanceof Function;    // true
+// {} instanceof Object          // * 报错,需要先拿变量接收 {} ,再判断,则为真,或者({})
+Function instanceof Object;      // true  --- 因为函数是特殊的对象
+Function instanceof Function;    // true  --- instanceof 左操作数必须是对象
 Array instanceof Object;         // true  --- 所以不能通过 a instanceof Object 就断定 a 是对象
 Array instanceof Function;       // true  --- 此处是说明构造函数的构造函数类型还是函数类型
 Object instanceof Object;        // true
@@ -82,3 +82,28 @@ num.toString(2);                 // 10001
 "0x"+num.toString(16);           // 11
 parseInt(0.1);                   // 0
 parseInt(.1);                    // NaN
+parseInt('11',2);                // parseInt()函数的第二个参数是告知转换成多少进制,范围2~36
+parseInt('ff',16);               // 15*15+15---255
+
+/**5.运算符
+	++x 和 x = x +1 并不完全相同,因为前者从不做字符串的拼接,如x='1', ++x => 2; 而 x = x+1 => '11'
+**/
+
+let aq = [{x:1},{y:2},{z:3}]
+let union = function(a,b) {
+	for(var i in a) {
+		for(var j in b) {
+			if(!(j in a)) {
+				a[j] = b[j]
+			}
+		}
+	}
+	return a
+}
+let bq = aq.reduce(union)
+console.log(bq)
+
+let s = 'javascript'
+console.log(s[1])
+console.log(Array.prototype.join.call(s,'|'))
+// console.log(Array.join(s,'|'))  // --- 火狐可以
