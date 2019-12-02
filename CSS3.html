@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>CSS3知识总结</title>
+		<style>
+			body{padding:30px;}
+			p{font-family: "times new roman";background:#F8F8F8;padding:15px;}
+			.content > div{margin-bottom:50px;}
+			@keyframes myA{
+				from{background:#568241;}
+				to{background:#FF4500;}
+			}
+		</style>
+	</head>
+	<body>
+		<i>以下内容来自菜鸟教程：https://www.runoob.com/css3/css3-tutorial.html</i>
+		<h3>简介</h3>
+		<p>
+			CSS3被拆分为"模块"。旧规范已拆分成小块，还增加了新的。<br/>
+			一些最重要CSS3模块如下：<br/>
+			选择器<br/>
+			盒模型<br/>
+			背景和边框<br/>
+			文字特效<br/>
+			2D/3D转换<br/>
+			动画<br/>
+			多列布局<br/>
+			用户界面
+		</p>
+		<h3>CSS3 边框</h3>
+		<p>
+			在本章中，您将了解以下的边框属性：<br/>
+			border-radius:CSS3 圆角<br/>
+			box-shadow:CSS3 盒阴影<br/>
+			border-image:CSS3 边界图片<br/>
+		</p>
+		<div class="content">
+			<div style='width:200px;height:200px;border:2px solid #ddd;border-radius:10px;'>
+				测试border-radius:
+				width:200px;
+				height:200px;
+				border:2px solid #ddd;
+				border-radius:10px;
+			</div>
+			<div style='width:200px;height:200px;box-shadow:0px 0px 10px 5px #888888;'>
+				测试box-shadow:
+				(水平、垂直、模糊距离、阴影尺寸、颜色、inset)
+				width:200px;
+				height:200px;
+				box-shadow:0px 0px 10px 20px #888888;
+			</div>
+			<div style='width:200px;height:200px;border:5px solid #ddd;border-image:url(border.png) 5 5 round;-webkit-border-image:url(border.png) 20 20 round stretch;'>
+				测试border-image:
+				-webkit-border-image:url(border.png) 20 20 round stretch;'
+			</div>
+		</div>
+		<h3>CSS3 用户界面</h3>
+		<div class="content">
+			<div class="resize" style='resize:vertical;border:1px solid #eee;overflow:auto;'>
+				该盒子可以有用户调整大小:-webkit-resize:both;overflow:auto;
+				resize取值：none/both/vertical/horizontal
+			</div>
+		</div>
+		<h3>CSS3 动画</h3>
+		<div class="content">
+			<div style='width:200px;height:200px;animation:myA 2s infinite alternate;'>
+				该盒子有背景动画：
+				width:200px;
+				height:200px;
+				animation:myA 2s infinite alternate;
+			</div>
+		</div>
+		<h3>CSS3 多列</h3>
+		<div class="content">
+			<div style='width:500px;column-count: 3;column-gap: 40px;column-rule-style:dashed;column-rule-width: 2px;column-rule-color: lightblue;background:#999;'>
+				<p style='column-span: all;background:transparent;'>该盒子采用css3多列布局，该p元素跨越所有列！！也就是不会分成多列显示在页面中！！当使用column-width属性时，就不用column-count属性了！</p>
+				“当我年轻的时候，我梦想改变这个世界；当我成熟以后，我发现我不能够改变这个世界，我将目光缩短了些，决定只改变我的国家；当我进入暮年以后，我发现我不能够改变我们的国家，我的最后愿望仅仅是改变一下我的家庭，但是，这也不可能。当我现在躺在床上，行将就木时，我突然意识到：如果一开始我仅仅去改变我自己，然后，我可能改变我的家庭；在家人的帮助和鼓励下，我可能为国家做一些事情；然后，谁知道呢?我甚至可能改变这个世界。”
+			</div>
+			<div style='column-width: 200px;background:#999;'>“当我年轻的时候，我梦想改变这个世界；当我成熟以后，我发现我不能够改变这个世界，我将目光缩短了些，决定只改变我的国家；当我进入暮年以后，我发现我不能够改变我们的国家，我的最后愿望仅仅是改变一下我的家庭，但是，这也不可能。当我现在躺在床上，行将就木时，我突然意识到：如果一开始我仅仅去改变我自己，然后，我可能改变我的家庭；在家人的帮助和鼓励下，我可能为国家做一些事情；然后，谁知道呢?我甚至可能改变这个世界。”</div>
+		</div>
+	</body>
+</html>
