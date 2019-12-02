@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>原型链知识总结</title>
+	</head>
+	<body>
+		<script>
+			/*
+			基本数据类型的构造函数都有一个相对应的原型对象，除了null和undefined(因为不是构造函数),只有构造函数才有prototype属性，对象或实例只有__proto__属性
+			*/
+			console.log(String.prototype === new String().__proto__)
+			console.log(Number.prototype === new Number().__proto__)
+			console.log(Boolean.prototype === new Boolean().__proto__)      // 实例的__proto__指向构造函数的原型对象
+			// console.log(undefined.prototype)                             // Cannot read property 'prototype' of undefined
+			// console.log(null.prototype)                                  // Cannot read property 'prototype' of null
+			/******** undefined和null不是构造函数，没有prototype属性，所以报错 ********/
+			
+			console.log(String.prototype.constructor === String)
+			console.log(Number.prototype.constructor === Number)
+			console.log(Boolean.prototype.constructor === Boolean)          // 原型对象有一个constructor属性指向构造函数
+			
+			console.log(Boolean.prototype.prototype) // undefined        
+			console.log(new Number().prototype) // undefined                // 原型对象或实例只有__proto__属性，没有prototype属性
+			
+			console.log(String.prototype.__proto__ === Object.prototype)    // true
+			console.log(Number.prototype.__proto__ === Object.prototype)    // true
+			console.log(Boolean.prototype.__proto__ === Object.prototype)   
+			console.log(Function.prototype.__proto__ === Object.prototype)
+			console.log(Array.prototype.__proto__ === Object.prototype)  // true 构造函数的原型对象的__proto__指向Object的原型对象
+			
+			console.log(String instanceof Object) // true
+			console.log(Number instanceof Object) // true
+			console.log(Boolean instanceof Object) // true                  // 也就是说：构造函数的构造函数是Object
+			console.log(Object instanceof Object)  // true                  // Object的构造函数还是Object，js中万物皆对象
+			
+			console.log(Object.prototype.__proto__)  // null                // Object的原型对象的__proto__指向null，再往上就没有了 所有的对象从null开始
+			/*
+			内置对象
+			标准内置对象
+			构造器对象
+			   Object    Boolean    String     Number     Function     Array      RegExp      Date     Error
+			   (构造器对象Constructor).prototype.__proto__ === Object.prototype
+			其他对象
+			   Math     Json     全局对象
+			*/
+			console.log(Math.prototype) // undefined
+			console.log(Date.prototype)                                     // Math只是js中的一个对象，而Date却是一个构造函数
+			console.log(Math instanceof Object) // true
+			console.log(Math.__proto__ === Object.prototype)
+			console.log(RegExp.prototype)
+			console.log(RegExp instanceof Object) // true
+			console.log(Error.prototype)
+			console.log(Error instanceof Object) // true
+			
+			console.log(window.__proto__.__proto__.__proto__.__proto__ === Object.prototype)  // 全局对象window，往上五级才会到null
+			console.log(window instanceof Object)
+			
+			console.log(Object instanceof Function)                         // 此处比较费解：虽然返回true,但是Object.prototype.__proto__ 并不等于 Function.prototype
+			console.log(Object.prototype.__proto__)                         // 因为Object.prototype.__proto__指向了nulll，此处可以理解为构造函数也是函数的一类
+			
+			console.log(function(){}.prototype)
+			console.log(function(){}.prototype.__proto__ === Object.prototype)
+		</script>
+	</body>
+</html>
