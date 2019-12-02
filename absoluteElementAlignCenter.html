@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>绝对定位元素垂直居中的几种方式</title>
+		<style>
+			.container{width:500px;height:500px;background: #FFFAE8;position:relative;margin:0 auto;margin-bottom:20px;}
+			.item{position:absolute;background:#78D5CE;}
+			/* 第一种 */
+			.method1{top:100px;left:150px;right:150px;bottom:100px;margin:auto;} /*margin:0 auto;也可以*/
+			/* 第二种 */
+			.method2{top:50%;left:50%;transform:translate(-50%,-50%);}
+			/* 第三种 */
+			.flex{display: flex;justify-content: center;}
+			.method3{width:200px;height:200px;align-self: center;}
+			/* 第四种 */
+			.method4{width:200px;height:200px;top:50%;left:50%;margin-left:-100px;margin-top:-100px;}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="item method1">第一种：通过设置top/bottom相等left/right相等实现水平垂直居中！此方法针对不定宽高子元素也适用！</div>
+		</div>
+		<div class="container">
+			<div class="item method2">第二种：通过设置top/left均为50%，再通过transform:translate(-50%,-50%)实现水平垂直居中！此方法针对不定宽高子元素也适用！</div>
+		</div>
+		<div class="container flex">
+			<div class="item method3">第三种：通过设置父元素弹性盒子，再通过justify-content:center实现水平居中,子元素设置align-self:center实现垂直居中！此方法针对不定宽高子元素也适用！</div>
+		</div>
+		<div class="container">
+			<div class="item method4">第四种：通过设置top/left均为50%，再通过margin-left和margin-top为绝对定位元素的宽高的一半实现水平垂直居中！此方法必须知道子元素的宽高，不能通过-50%实现！</div>
+		</div>
+	</body>
+</html>
