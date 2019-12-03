@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>js中的存储操作</title>
+		<style>
+			.desc,.loginBox{padding:30px;}
+			p{font-family: "times new roman";
+				background:#F8F8F8;
+				border:1px solid #333;
+				border-radius:5px;
+				padding:30px;
+				margin-bottom:50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="desc">
+			<h2>JS中各种存储操作总结</h2>
+			<p>
+				1.登录操作存储cookie流程：点击登录之后如果有勾上保存账号密码，则通过定义的setCookie方法把用户名和密码保存到本地cookie，进入页面的时候就通过定义的getCookie方法
+				回填账号密码等信息，如果取消记住账号密码，则通过定义的clearCookie方法清除cookie。参考Atom-LoginPage <br/>
+				## cookie的信息保存格式为字符串，如：age=25; gender=male; hoppy=basketball; girlfriend=1; property=poor; username=AndyPeng; password=123456
+			</p>
+			<p>
+				2.菜单权限控制流程：登录进来之后，通过用户名去调取接口查询用户的菜单权限列表，并存入session。然后在主页进行渲染菜单列表。达到控制菜单权限的目的。参考Atom-Index<br/>
+				## session的信息保存格式是从后台请求过来的，格式不限。
+			</p>
+			<p>
+				3.浏览器这边sessionid会保存在cookie中。服务器与浏览器交互之前会通过这个sessionid来互相验证身份。登录之后通过用户名和密码发起请求，后台会返回一个sessionid
+			</p>
+			<p>
+				4.localStorage操作流程：任何时候都可以通过localStorage.setItem('key',JSON.stringify(val))的形式保存，格式为json字符串。获取的时候通过localStorage.
+				getItem('key')的形式，再通过JSON.parse()转换成js对象。
+			</p>
+		</div>
+		<div class="loginBox">
+			<input type="text" placeholder="请输入用户名" name='username' id='username' />
+			<input type="password" placeholder="请输入密码" name='password' id='password' />
+			<button onclick='login()'>登录</button>
+		</div>
+		<script>
+			//写cookies
+			function setCookie(c_name, value, expiredays) {
+				var exdate = new Date();
+				exdate.setTime(exdate.getTime() + expiredays * 24 * 60 * 60 * 1000); // 设置过期时间在当前时间的基础上加上过期的天数转换成的毫秒数
+				document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+				// 上面的escape函数是对字符串进行编码，这样就可以在所有的计算机上读取该字符串。   
+				// toGMTString()是dateObject的字符串表示。此日期会在转换为字符串之前由本地时区转换为 GMT 时区。
+			}
+
+			//写cookies（设置作用域）
+			// function setCookie(name, value) {
+			// 	var Days = 30;
+			// 	var exp = new Date();
+			// 	exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+			// 	let hostname = location.hostname.substring(location.hostname.indexOf(".") + 1) //设置为一级域名
+			// 	document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + ";domain=" + hostname + ";path=/";
+			// }
+
+
+			//读取cookies
+			function getCookie(name) {
+				var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+				if (arr = document.cookie.match(reg))
+					return (arr[2]);
+				else
+					return null;
+			}
+
+			//删除cookies
+			function delCookie(name) {
+				var exp = new Date();
+				exp.setTime(exp.getTime() - 1);
+				var cval = getCookie(name);
+				if (cval != null)
+					document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+			}
+			//删除cookies（有作用域的）
+			function delCookie(name) {
+				var exp = new Date();
+				var name = "access_token";
+				exp.setTime(exp.getTime() - 1);
+				var cval = getCookie(name);
+				if (cval != null) {
+					let hostname = location.hostname.substring(location.hostname.indexOf(".") + 1)
+					document.cookie = name + "='';expires=" + exp.toGMTString() + ";domain=" + hostname + ";path=/";
+				}
+			}
+			setCookie('username','AndyPeng',30)
+			setCookie('password','123456',30)
+			setCookie('age','25',30)
+			setCookie('gender','male',30)
+			setCookie('hoppy','basketball',30)
+			setCookie('girlfriend','1',30)
+			setCookie('property','poor',30)
+			// document.cookie = "age=25; gender=male; hoppy=basketball; girlfriend=1; property=poor; username=AndyPeng; password=123456"
+			// 也可以像上面一样直接给cookie赋值一个字符串
+			console.log(document.cookie);
+			console.log(getCookie("username"));
+			let username = getCookie("username"),password = getCookie("password");
+			// 回填账号密码
+			document.getElementsByName('username')[0].value = username;
+			document.getElementsByName('password')[0].value = password;
+			function login() {
+				let username = document.getElementsByName('username')[0].value
+				let password = document.getElementsByName('password')[0].value
+				if(username === 'AndyPeng' && password === '123456') {
+					alert('登录成功，准备跳转！')
+				}
+			}
+			
+			// session操作：// 保存数据到sessionStorage
+			// 	sessionStorage.setItem('key', 'value');
+			// 	// 从sessionStorage获取数据
+			// 	var data = sessionStorage.getItem('key');
+			// 	// 从sessionStorage删除保存的数据
+			// 	sessionStorage.removeItem('key');
+			// 	// 从sessionStorage删除所有保存的数据
+			// 	sessionStorage.clear();
+			sessionStorage.setItem('username', 'AndyPeng');
+			sessionStorage.setItem('password', '123456');
+			sessionStorage.setItem('gender', 'male');
+			sessionStorage.setItem('age', '25');
+			sessionStorage.setItem('gender', 'male');
+			sessionStorage.setItem('hoppy','basketball')
+			sessionStorage.setItem('girlfriend','1')
+			sessionStorage.setItem('property','poor')
+			let uname = sessionStorage.getItem('username')
+			console.log(uname)
+			
+			// localStorage操作
+			let userInfo = {username:"AndyPeng",password:123456,gender:'male',age:25,hoppy:'basketball',girlfriend:1,property:'poor'}
+			localStorage.setItem("userInfo",JSON.stringify(userInfo))
+			// localStorage.setItem("userInfo","")  清空
+			let uinfo = JSON.parse(localStorage.getItem('userInfo'))
+			console.log(uinfo)
+			// localStorage.removeItem("userInfo")  删除
+		// </script>
+	</body>
+</html>

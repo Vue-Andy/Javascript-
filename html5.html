@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>html5新标签及使用</title>
+		<style>
+			body{padding:30px;}
+			p.title{font-family: "times new roman";font-size: 16px;}
+			div.content{background:#F8F8F8;
+				border:1px solid #333;
+				border-radius:5px;
+				padding:30px;
+				margin-bottom:50px;
+			}
+			p.desc{color:#568241;}
+			mark{color:red;background:#568241;}
+		</style>
+	</head>
+	<body>
+		<p class="title">1.canvas</p>
+		<div class="content">
+			<canvas id="can"></canvas>
+		</div>
+		<p class="title">2.audio</p>
+		<div class="content">
+			<audio src=""></audio>
+			<audio controls>
+			    <!-- <source src="horse.ogg" type="audio/ogg"> -->
+			    <source src="test.mp3" type="audio/mpeg">
+			    您的浏览器不支持 audio 元素。
+			</audio>
+		</div>
+		<p class="title">3.video</p>
+		<div class="content">
+			<video src=""></video>
+			<video width="320" height="240" controls>
+				<source src="movie.mp4" type="video/mp4">
+				<!-- <source src="forrest_gump.ogg" type="video/ogg"> -->
+				<!-- <track src="subtitles_en.vtt" kind="subtitles" srclang="en" label="English">
+				<track src="subtitles_no.vtt" kind="subtitles" srclang="no" label="Norwegian"> -->
+			</video>
+			<p class="desc">标签为媒体元素（比如 audio和video）规定外部文本轨道。这个元素用于规定字幕文件或其他包含文本的文件，当媒体播放时，这些文件是可见的。</p>
+		</div>
+		<p class="title">4.embed标签定义了一个容器，用来嵌入外部应用或者互动程序（插件）。</p>
+		<div class="content">
+			<embed src="helloworld.swf">
+		</div>
+		<p class="title">5.datalist</p>
+		<div class="content">
+			<input type="text" list='inputList'>
+			<datalist id="inputList">
+			  <option value="Internet Explorer">
+			  <option value="Firefox">
+			  <option value="Chrome">
+			  <option value="Opera">
+			  <option value="Safari">
+			</datalist>
+		</div>
+		<p class="title">6.output标签作为计算结果输出显示(比如执行脚本的输出)</p>
+		<div class="content">
+			<form oninput="x.value=parseInt(a.value)+parseInt(b.value)">0
+			  <input type="range" id="a" value="50">100
+			  +<input type="number" id="b" value="50">
+			  =<output name="x" for="a b"></output>
+			</form>
+		</div>
+		<p class="title">7.页面排版元素：header,footer,nav,aside,article,section</p>
+		<p class="title">8.html5移除的元素：acronym,applet,basefont,big,center,dir,font,frame,frameset,noframes,strike,tt</p>
+		<div class="content">
+			<progress id='pro' value='50' max='100'></progress>
+			<button onclick='changeValue()'>改变进度条值</button>
+		</div>
+		<p class="title">9.summary标签包含details元素的标题,details标签规定了用户可见的或者隐藏的需求的补充细节</p>
+		<div class="content">
+			<details>
+				<summary>Copyright 1999-2011.</summary>
+				<p> - by Refsnes Data. All Rights Reserved.</p>
+				<p>All content and graphics on this web site are the property of the company Refsnes Data.</p>
+				<p><b>注意：</b>目前，只有 Chrome 和 Safari 6 支持 details 标签。</p>
+			</details>
+		</div>
+		<p class="title">10.dialog</p>
+		<div class="content">
+			<table border="1">
+				<tr>
+				  <th>January <dialog open>This is an open dialog window</dialog></th>
+				  <th>February</th>
+				  <th>March</th>
+				</tr>
+				<tr>
+				  <td>31</td>
+				  <td>28</td>
+				  <td>31</td>
+				</tr>
+			</table>
+		</div>
+		<p class="title">11.mark--其实就是文本高亮</p>
+		<div class="content">
+			<p>Do not forget to buy <mark>milk</mark> today.</p>
+		</div>
+		<p class="title">12.figure和figcaption:前者标签规定独立的流内容（图像、图表、照片、代码等等）。后者为figure元素定义标题。</p>
+		<div class="content">
+			<figure>
+			  <img src="border.png" alt="The Pulpit Rock" width="304" height="228">
+			  <figcaption>Fig.1 这是一张可以用来做border-image的图片</figcaption>
+			</figure>
+		</div>
+		<p class="title"></p>
+		<div class="content"></div>
+		<p class="title"></p>
+		<div class="content"></div>
+		
+		<script>
+			function changeValue() {
+				document.getElementById('pro').value = 20
+			}
+		</script>
+	</body>
+</html>

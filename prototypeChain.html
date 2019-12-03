@@ -3,38 +3,159 @@
 	<head>
 		<meta charset="utf-8">
 		<title>原型链知识总结</title>
+		<style>
+			.container{padding:30px;}
+			.summarize{background:#F8F8F8;color:orangered;font-size: 18px;font-weight: bold;}
+			p{font-size: 16px;font-weight: bold;}
+			pre{
+				font-family: "times new roman";
+				background:#F8F8F8;
+				border:1px solid #333;
+				border-radius:5px;
+				padding:15px 0 0 0;
+			}
+			.desc{
+				color:#568241;
+				margin-bottom:50px;
+			}
+		</style>
 	</head>
 	<body>
+		<div class="container">
+			<h1>原型链相关知识总结</h1>
+			<div class="summarize">
+				1、Object是作为众多new出来的实例的基类 function Object(){ [ native code ] }<br/>
+				2、Function是作为众多function出来的函数的基类 function Function(){ [ native code ] }<br/>
+				3、构造函数的proto(包括Function.prototype和Object.prototype)都指向Function.prototype<br/>
+				4、原型对象的proto都指向Object.prototype<br/>
+				5、Object.prototype.proto指向null<br/>
+				此处和下图来自引用  链接：https://www.jianshu.com/p/f30fa27999e3
+			</div>
+			<div><img src="./prototypeChain.jpg" alt=""></div>
+			<p>
+				1.基本数据类型的构造函数都有一个相对应的原型对象，除了undefined和null(因为不是构造函数)。<br/>
+				2.只有构造函数才有prototype属性，对象或实例只有__proto__属性。<br/>
+				3.需要注意的是普通函数也可以是构造函数，构造函数又是函数的一种，所以函数(包括构造函数)既有prototype属性也有__proto__属性。
+			</p>
+			<pre>
+				String.prototype === new String().__proto__
+				Number.prototype === new Number().__proto__
+				Boolean.prototype === new Boolean().__proto__
+				undefined.prototype                             // Cannot read property 'prototype' of undefined
+				null.prototype                                  // Cannot read property 'prototype' of null
+			</pre>
+			<div class="desc">实例的__proto__指向构造函数的原型对象,undefined和null不是构造函数，没有prototype属性，所以报错。</div>
+			<pre>
+				String.prototype.constructor === String
+				Number.prototype.constructor === Number
+				Boolean.prototype.constructor === Boolean
+			</pre>
+			<div class="desc">原型对象有一个constructor属性指向构造函数。</div>
+			<pre>
+				console.log(Boolean.prototype.prototype)        // undefined
+				console.log(new Number().prototype)             // undefined
+			</pre>
+			<div class="desc">原型对象或实例只有__proto__属性，没有prototype属性。</div>
+			<pre>
+				String.__proto__ === Function.prototype
+				Number.__proto__ === Function.prototype
+				Boolean.__proto__ === Function.prototype
+				Array.__proto__ === Function.prototype
+				Object.__proto__ === Function.prototype
+				Date.__proto__ === Function.prototype
+				Error.__proto__ === Function.prototype
+			</pre>
+			<div class="desc">所有构造函数的__proto__属性都指向Function.prototype,因为构造函数就是函数的一种。</div>
+			<pre>
+				String.prototype.__proto__ === Object.prototype    // true
+				Number.prototype.__proto__ === Object.prototype    // true
+				Boolean.prototype.__proto__ === Object.prototype   // true
+				Function.prototype.__proto__ === Object.prototype  // true
+				Array.prototype.__proto__ === Object.prototype     // true 
+			</pre>
+			<div class="desc">构造函数的原型对象的__proto__指向Object的原型对象。</div>
+			<pre>
+				String instanceof Object  // true
+				Number instanceof Object  // true
+				Boolean instanceof Object // true
+				Object instanceof Object  // true
+			</pre>
+			<div class="desc">也就是说：构造函数的构造函数是Object,Object的构造函数还是Object,换句话说：原型对象的__proto__都指向Object.prototype---js中万物皆对象。</div>
+			<pre>
+				console.log(Object.prototype.__proto__)  // null
+			</pre>
+			<div class="desc">Object的原型对象的__proto__指向null，再往上就没有了,所有的对象从null开始的。</div>
+			<p>内置对象</p>
+			<p>标准内置对象</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;构造器对象</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;&nbsp;&nbsp;&nbsp;Boolean&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;&nbsp;&nbsp;&nbsp;
+			Number&nbsp;&nbsp;&nbsp;&nbsp;Function&nbsp;&nbsp;&nbsp;&nbsp;Array&nbsp;&nbsp;&nbsp;&nbsp;RegExp&nbsp;&nbsp;&nbsp;&nbsp;
+			Date&nbsp;&nbsp;&nbsp;&nbsp;Error</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;(构造器对象Constructor).prototype.__proto__ === Object.prototype</p>
+					
+			<p>其他对象</p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;Math&nbsp;&nbsp;&nbsp;&nbsp;Json&nbsp;&nbsp;&nbsp;&nbsp;全局对象</p>
+			<pre>
+				console.log(Math.prototype) // undefined
+				console.log(Date.prototype)                            // Math只是js中的一个对象，而Date却是一个构造函数
+				console.log(Math instanceof Object) // true
+				console.log(Math.__proto__ === Object.prototype)
+				console.log(RegExp.prototype)
+				console.log(RegExp instanceof Object) // true
+				console.log(Error.prototype)
+				console.log(Error instanceof Object) // true
+				
+				console.log(window.__proto__.__proto__.__proto__.__proto__ === Object.prototype)  // 全局对象window，往上五级才会到null
+				console.log(window instanceof Object)
+				
+				console.log(Object instanceof Function)                // true
+				console.log(Object.prototype.__proto__)                // 因为Object.prototype.__proto__指向了null，此处可以理解为构造函数也是函数的一类
+				
+				console.log(function(){}.prototype)
+				function(){}.prototype.__proto__ === Object.prototype  // 此处是把普通函数当构造函数，所以有prototype属性
+				function(){}.__proto__ === Function.prototype          // 此处是把函数当对象，所以有__proto__属性
+			</pre>
+			<div class="desc">此处比较费解：虽然返回true,但是Object.prototype.__proto__ 并不等于 Function.prototype,因为Object.prototype.__proto__指向了nulll，此处可以理解为构造函数也是函数的一类。</div>
+		</div>
 		<script>
 			/*
-			基本数据类型的构造函数都有一个相对应的原型对象，除了null和undefined(因为不是构造函数),只有构造函数才有prototype属性，对象或实例只有__proto__属性
+			基本数据类型的构造函数都有一个相对应的原型对象，除了undefined和null(因为不是构造函数),只有构造函数才有prototype属性，对象或实例只有__proto__属性，
+			需要注意的是普通函数也可以是构造函数，构造函数又是函数的一种，所以函数(包括构造函数)既有prototype属性也有__proto__属性
 			*/
 			console.log(String.prototype === new String().__proto__)
 			console.log(Number.prototype === new Number().__proto__)
-			console.log(Boolean.prototype === new Boolean().__proto__)      // 实例的__proto__指向构造函数的原型对象
-			// console.log(undefined.prototype)                             // Cannot read property 'prototype' of undefined
-			// console.log(null.prototype)                                  // Cannot read property 'prototype' of null
+			console.log(Boolean.prototype === new Boolean().__proto__)          // 实例的__proto__指向构造函数的原型对象
+			// console.log(undefined.prototype)                                 // Cannot read property 'prototype' of undefined
+			// console.log(null.prototype)                                      // Cannot read property 'prototype' of null
 			/******** undefined和null不是构造函数，没有prototype属性，所以报错 ********/
 			
 			console.log(String.prototype.constructor === String)
 			console.log(Number.prototype.constructor === Number)
-			console.log(Boolean.prototype.constructor === Boolean)          // 原型对象有一个constructor属性指向构造函数
+			console.log(Boolean.prototype.constructor === Boolean)              // 原型对象有一个constructor属性指向构造函数
 			
 			console.log(Boolean.prototype.prototype) // undefined        
-			console.log(new Number().prototype) // undefined                // 原型对象或实例只有__proto__属性，没有prototype属性
+			console.log(new Number().prototype) // undefined                    // 原型对象或实例只有__proto__属性，没有prototype属性
 			
-			console.log(String.prototype.__proto__ === Object.prototype)    // true
-			console.log(Number.prototype.__proto__ === Object.prototype)    // true
-			console.log(Boolean.prototype.__proto__ === Object.prototype)   
-			console.log(Function.prototype.__proto__ === Object.prototype)
-			console.log(Array.prototype.__proto__ === Object.prototype)  // true 构造函数的原型对象的__proto__指向Object的原型对象
+			console.log(String.__proto__ === Function.prototype)
+			console.log(Number.__proto__ === Function.prototype)
+			console.log(Boolean.__proto__ === Function.prototype)
+			console.log(Array.__proto__ === Function.prototype)
+			console.log(Object.__proto__ === Function.prototype)
+			console.log(Date.__proto__ === Function.prototype)
+			console.log(Error.__proto__ === Function.prototype)                 // 所有构造函数的__proto__属性都指向Function.prototype，因为构造函数就是函数的一种
+			
+			console.log(String.prototype.__proto__ === Object.prototype)        // true
+			console.log(Number.prototype.__proto__ === Object.prototype)        // true
+			console.log(Boolean.prototype.__proto__ === Object.prototype)       // true
+			console.log(Function.prototype.__proto__ === Object.prototype)      // true
+			console.log(Array.prototype.__proto__ === Object.prototype)         // true 构造函数的原型对象的__proto__指向Object的原型对象
 			
 			console.log(String instanceof Object) // true
 			console.log(Number instanceof Object) // true
-			console.log(Boolean instanceof Object) // true                  // 也就是说：构造函数的构造函数是Object
-			console.log(Object instanceof Object)  // true                  // Object的构造函数还是Object，js中万物皆对象
+			console.log(Boolean instanceof Object) // true                      // 也就是说：构造函数的构造函数是Object
+			console.log(Object instanceof Object)  // true                      // Object的构造函数还是Object，js中万物皆对象
 			
-			console.log(Object.prototype.__proto__)  // null                // Object的原型对象的__proto__指向null，再往上就没有了 所有的对象从null开始
+			console.log(Object.prototype.__proto__)  // null                    // Object的原型对象的__proto__指向null，再往上就没有了，所有的对象从null开始的
 			/*
 			内置对象
 			标准内置对象
@@ -45,9 +166,9 @@
 			   Math     Json     全局对象
 			*/
 			console.log(Math.prototype) // undefined
-			console.log(Date.prototype)                                     // Math只是js中的一个对象，而Date却是一个构造函数
+			console.log(Date.prototype)                                         // Math只是js中的一个对象，而Date却是一个构造函数
 			console.log(Math instanceof Object) // true
-			console.log(Math.__proto__ === Object.prototype)
+			console.log(Math.__proto__ === Object.prototype)  // true
 			console.log(RegExp.prototype)
 			console.log(RegExp instanceof Object) // true
 			console.log(Error.prototype)
@@ -56,11 +177,17 @@
 			console.log(window.__proto__.__proto__.__proto__.__proto__ === Object.prototype)  // 全局对象window，往上五级才会到null
 			console.log(window instanceof Object)
 			
-			console.log(Object instanceof Function)                         // 此处比较费解：虽然返回true,但是Object.prototype.__proto__ 并不等于 Function.prototype
-			console.log(Object.prototype.__proto__)                         // 因为Object.prototype.__proto__指向了nulll，此处可以理解为构造函数也是函数的一类
+			console.log(Object instanceof Function)                             // 此处比较费解：虽然返回true,但是Object.prototype.__proto__ 并不等于 Function.prototype
+			console.log(Object.prototype.__proto__)                             // 因为Object.prototype.__proto__指向了nulll，此处可以理解为构造函数也是函数的一类
 			
 			console.log(function(){}.prototype)
-			console.log(function(){}.prototype.__proto__ === Object.prototype)
+			console.log(function(){}.prototype.__proto__ === Object.prototype)  // 此处是把普通函数当构造函数，所以有prototype属性
+			console.log(function(){}.__proto__ === Function.prototype)          // 此处是把函数当对象，所以有__proto__属性
+			
+			function Person(){}
+			var person = new Person()
+			console.log(Person.__proto__ === Function.prototype)
+			console.log(Person.__proto__.__proto__ === Object.prototype)
 		</script>
 	</body>
 </html>
