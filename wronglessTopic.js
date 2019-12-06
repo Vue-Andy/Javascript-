@@ -107,3 +107,19 @@ let s = 'javascript'
 console.log(s[1])
 console.log(Array.prototype.join.call(s,'|'))
 // console.log(Array.join(s,'|'))  // --- 火狐可以
+
+// 如何禁止一个函数被直接调用,让其只能用new?? --- 蜜獾面试题
+function justForNew(name) {
+	if(this === window) {
+		throw Error("该函数设置了只能通过new调用!");
+	}
+	this.name = name;
+	this.method = function() {
+		console.log('此为一个方法!');
+	}
+}
+justForNew('Andy')
+
+// 观察者模式
+
+// 权限控制--路由控制

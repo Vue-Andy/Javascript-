@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>js中this的指向问题总结</title>
+		<style>
+			body{padding:30px;}
+			p.title{color:orangered;font-size: 18px;font-weight: bold;}
+			pre{
+				font-family: "times new roman";
+				background:#F8F8F8;
+				border:1px solid #333;
+				border-radius:5px;
+				padding:15px 0 0 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h3>js中this的指向问题总结</h3>
+			<p class="title">全局的this,指向window</p>
+			<div class="code">
+				<pre>
+					console.log('全局this为:'+this)
+				</pre>
+			</div>
+			<p class="title">全局函数中的this,指向window</p>
+			<div class="code">
+				<pre>
+					function globalFun() {
+						console.log('全局函数中的this为:'+this)
+					}
+					globalFun()
+				</pre>
+			</div>
+			<p class="title">严格模式函数中的this,指向undefined</p>
+			<div class="code">
+				<pre>
+					function strictModeFun() {
+						'use strict';
+						console.log('严格模式函数中的this为:'+this)
+					}
+					strictModeFun()
+				</pre>
+			</div>
+			<p class="title">构造函数当函数直接调用时this,指向window;构造函数使用new时this指向实例化后的对象</p>
+			<div class="code">
+				<pre>
+					function ConsFun() {
+						this.name = name || 'Andy';
+						console.log(this === window ? '构造函数当函数直接调用时this为：' + this : '构造函数使用new时this为:' + this)
+					}
+					let consFun = new ConsFun;
+					ConsFun()
+				</pre>
+			</div>
+			<p class="title">使用call，apply，bind后this指向第一个实参,但当第一个实参为null和undefined时，指向window</p>
+			<div class="code">
+				<pre>
+					function callFun() {
+						console.log(this)
+					}
+					callFun.call('abc')
+					callFun.call(null)
+					callFun.call(undefined)
+				</pre>
+			</div>
+			<p class="title">定时器中的this，指向window</p>
+			<div class="code">
+				<pre>
+					setTimeout(function(){
+						console.log('定时器中的this为:',this)
+					},100)
+					let obj2 = {
+						time:new Date(),
+						tfun:setTimeout(function(){
+							console.log(this)              // window
+						},10)
+					}
+					obj2.tfun
+				</pre>
+			</div>
+			<p class="title">直接在元素上通过onclick绑定的事件里的this，指向window</p>
+			<div class="code">
+				<pre>
+					function checkEventThis() {
+						console.log('直接在元素上通过onclick绑定的事件里的this为:'+this)
+					}
+				</pre>
+			</div>
+			<p class="title">通过addEventListener绑定的事件中的this，指向事件绑定的DOM对象</p>
+			<div class="code">
+				<pre>
+					let btn = document.getElementById('btn')
+					btn.addEventListener('click',function() {
+						console.log('通过addEventListener绑定的事件中的this为:'+this)
+					})
+				</pre>
+			</div>
+			<p class="title">通过addEventListener绑定的事件通过bind绑定到其他对象时中的this，指向被bind的对象</p>
+			<div class="code">
+				<pre>
+					let obj = {name:'andy'}
+					btn.addEventListener('click',function() {
+						console.log('通过addEventListener绑定的事件通过bind绑定到window时的this为:'+this)
+					}.bind(window))
+					btn.addEventListener('click',function() {
+						console.log('通过addEventListener绑定的事件通过bind绑定到自定义对象obj时的this为:'+this)
+					}.bind(obj))
+				</pre>
+			</div>
+			<p class="title">立即执行函数的this，指向window</p>
+			<div class="code">
+				<pre>
+					(function(){
+						console.log('立即执行函数的this为:'+ this)
+					})()
+				</pre>
+			</div>
+			<p class="title">对象中的方法，以对象调用时的this，指向该对象，如果先赋值，后在全局对象里调用，则指向window</p>
+			<div class="code">
+				<pre>
+					var personName = 'outername' 
+					** 此处如果用let声明，则window.personName为undefined，因为通过let，const，class声明的变量不在window对象中，而是在块级作用域script中
+					let obj1 = {
+					 	personName: 'innername',
+						getName: function() {
+						 	console.log(this.personName);
+						}
+					}
+					obj1.getName(); // innername
+					let fn = obj1.getName;
+					fn(); //outername this -> window
+				</pre>
+			</div>
+			<p class="title">以下是腾讯的一道笔试题</p>
+			<div class="code">
+				<pre>
+					var x = 20;
+					var a = {
+						x: 15,
+						fn: function() {
+							var x = 30;
+							return function() {
+								return this.x
+							}
+						}
+					}
+					console.log(a.fn());
+					console.log((a.fn())());
+					console.log(a.fn()());
+					console.log(a.fn()() == (a.fn())());
+					console.log(a.fn().call(this));
+					console.log(a.fn().call(a));
+				</pre>
+			</div>
+		</div>
+		<div class="codeContainer">
+			<button id="btn" onclick=checkEventThis()>点我查看事件里的this指向</button>
+		</div>
+		<script>
+			console.log('全局this为:'+this)
+			
+			function globalFun() {
+				console.log('全局函数中的this为:'+this)
+			}
+			globalFun()
+			
+			function strictModeFun() {
+				'use strict';
+				console.log('严格模式函数中的this为:'+this)
+			}
+			strictModeFun()
+			
+			function ConsFun() {
+				this.name = name || 'Andy';
+				console.log(this === window ? '构造函数当函数直接调用时this为：' + this : '构造函数使用new时this为:' + this)
+			}
+			let consFun = new ConsFun;
+			ConsFun()
+			
+			function callFun() {
+				console.log(this)
+			}
+			callFun.call('abc')
+			callFun.call(null)
+			callFun.call(undefined)
+			
+			setTimeout(function(){
+				console.log('定时器中的this为:',this)
+			},100)
+			let obj2 = {
+				time:new Date(),
+				tfun:setTimeout(function(){
+					console.log(this)              // window
+				},10)
+			}
+			obj2.tfun
+			
+			function checkEventThis() {
+				console.log('直接在元素上通过onclick绑定的事件里的this为:'+this)
+			}
+			
+			let btn = document.getElementById('btn')
+			btn.addEventListener('click',function() {
+				console.log('通过addEventListener绑定的事件中的this为:'+this)
+			})
+			let obj = {name:'andy'}
+			btn.addEventListener('click',function() {
+				console.log('通过addEventListener绑定的事件通过bind绑定到window时的this为:'+this)
+			}.bind(window))
+			btn.addEventListener('click',function() {
+				console.log('通过addEventListener绑定的事件通过bind绑定到自定义对象obj时的this为:'+this)
+			}.bind(obj))
+			
+			var personName = 'outername' // 此处如果用let声明，则window.personName为undefined，因为通过let，const，class声明的变量不在window对象中，而是在块级作用域script中
+			let obj1 = {
+			 	personName: 'innername',
+				getName: function() {
+				 	console.log(this.personName);
+				}
+			}
+			obj1.getName(); // innername
+			let fn = obj1.getName;
+			fn(); //outername this -> window
+			
+			(function(){
+				console.log('立即执行函数的this为:'+ this)
+			})()
+			
+			// 以下是腾讯的一道笔试题：
+			var x = 20;
+			var a = {
+				x: 15,
+				fn: function() {
+					var x = 30;
+					return function() {
+						return this.x
+					}
+				}
+			}
+			console.log(a.fn());
+			console.log((a.fn())());
+			console.log(a.fn()());
+			console.log(a.fn()() == (a.fn())());
+			console.log(a.fn().call(this));
+			console.log(a.fn().call(a));
+			
+		</script>
+	</body>
+</html>
